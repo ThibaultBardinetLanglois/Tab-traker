@@ -3,13 +3,26 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import Vuetify from 'vuetify'
+import 'vuetify/dist/vuetify.min.css'
+import { sync } from 'vuex-router-sync'
+import store from '@/store/store'
+import VueYouTubeEmbed from 'vue-youtube-embed'
+import icons from 'v-svg-icons'
 
 Vue.config.productionTip = false
+
+Vue.use(Vuetify)
+Vue.use(VueYouTubeEmbed)
+Vue.component('icon', icons)
+
+sync(store, router)
 
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>'
 })
