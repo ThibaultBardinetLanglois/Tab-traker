@@ -54,6 +54,7 @@
 
 <script>
 import SongsService from '@/services/SongsService'
+import checkToken from '@/utils/checkToken'
 import Panel from '@/components/Panel'
 import SongBookmarks from './SongBookmarks.vue'
 export default {
@@ -68,6 +69,9 @@ export default {
     }
   },
   async mounted () {
+    // do a request to check if token is expired
+    await checkToken()
+
     // do a request to the backend for all the songs
     this.songs = (await SongsService.getAllSongs()).data
     console.log('SONGS =>', this.songs)

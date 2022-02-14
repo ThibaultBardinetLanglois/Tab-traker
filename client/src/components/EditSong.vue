@@ -91,6 +91,7 @@
 <script>
 import Panel from '@/components/Panel'
 import SongsService from '@/services/SongsService'
+import checkToken from '@/utils/checkToken'
 export default {
   data () {
     return {
@@ -132,11 +133,17 @@ export default {
           })
         } catch (err) {
           console.log(err)
+          this.$router.push({
+            name: 'login'
+          })
         }
       }
     }
   },
   async mounted () {
+    // do a request to check if token is expired
+    await checkToken()
+
     try {
       const songId = this.$store.state.route.params.songId
       console.log('song ID =>', songId)

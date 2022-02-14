@@ -50,6 +50,7 @@
 <script>
 import Panel from '@/components/Panel'
 import BookmarksService from '@/services/BookmarksService'
+import checkToken from '@/utils/checkToken'
 export default {
   props: [
     'song'
@@ -76,6 +77,9 @@ export default {
         await BookmarksService.post(newBookmark)
       } catch (err) {
         console.log(err)
+        this.$router.push({
+          name: 'login'
+        })
       }
 
       try {
@@ -94,10 +98,15 @@ export default {
         this.bookmark = null
       } catch (err) {
         console.log(err)
+        this.$router.push({
+          name: 'login'
+        })
       }
     }
   },
   async mounted () {
+    await checkToken()
+
     const userId = this.$store.state.user.id
     const songId = this.$store.state.route.params.songId
     const bookmark = (await BookmarksService.find(userId, songId)).data[0]

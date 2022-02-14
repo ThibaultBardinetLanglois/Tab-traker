@@ -8,6 +8,6 @@ const router = express.Router()
 
 router.post('/user/register', authPolicyController.register , userRoutes.register)
 router.post('/user/login', authPolicyController.login, userRoutes.login)
-router.get("/user/checkToken", auth, userRoutes.checkToken)
+router.get("/user/checkToken/:token", auth, userRoutes.checkToken)
 
 module.exports = router

@@ -6,6 +6,9 @@ export default {
   },
   login (credentials) {
     return Api().post('user/login', credentials)
+  },
+  checkToken (token) {
+    return Api().get(`user/checkToken/${token}`)
   }
 }
 

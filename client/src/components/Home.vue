@@ -5,7 +5,12 @@
 </template>
 
 <script>
+import checkToken from '@/utils/checkToken'
 export default {
+  async mounted () {
+    // do a request to check if token is expired
+    await checkToken()
+  }
 }
 </script>
 

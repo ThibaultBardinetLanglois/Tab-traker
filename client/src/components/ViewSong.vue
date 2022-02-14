@@ -27,6 +27,7 @@ import SongMetadata from '@/components/ViewSong/SongMetadata'
 import Youtube from '@/components/ViewSong/Youtube'
 import Lyrics from '@/components/ViewSong/Lyrics'
 import Tab from '@/components/ViewSong/Tab'
+import checkToken from '@/utils/checkToken'
 export default {
   data () {
     return {
@@ -34,6 +35,9 @@ export default {
     }
   },
   async mounted () {
+    // do a request to check if token is expired
+    await checkToken()
+
     const songId = this.$store.state.route.params.songId
     console.log(`ID => ${songId}`)
     this.song = (await SongsService.showSong(songId)).data

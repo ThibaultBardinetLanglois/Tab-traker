@@ -1,5 +1,6 @@
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
+const jwtDecode = require("jwt-decode")
 const dotenv = require("dotenv")
 dotenv.config()
 const serverSecret = process.env.SERVER_SECRET
@@ -44,7 +45,23 @@ exports.login = async (req, res) => {
     })
 }
 
-exports.checkToken = (req, res) => {
-    if(!req.token) return res.status(404).json({message: "Invalid token!"})
-    res.status(200).json({decryptedToken: req.token})
+exports.checkToken = async (req, res) => {
+    console.log("REQ PARAMS ===>", req.params)
+    if(!req.params.token) return res.status(404).json({message: "Invalid token!"})
+    const token = req.params.token
+    const decoded = jwtDecode(token)
+    console.log('DECODED TOKEN =>', decoded)
+    const currentTime = new Date().getTime() / 1000
+    console.log('CURRENT TIME =>', currentTime)
+
+    const user = await userModel.getUserByEmail(decoded.email)
+    if (currentTime > decoded.exp) {
+        res.status(403).json({message: 'Token is invalid'})
+    } else {
+        const payload = {id: decoded.id, pseudo: decoded.pseudo, email: decoded.email, role: decoded.role}
+        const token = jwt.sign(payload, serverSecret, { expiresIn: "5s" })
+        const userInfos = {id: decoded.id, pseudo: decoded.pseudo, email: decoded.email, role: decoded.role}
+        console.log(userInfos)
+        res.status(200).send({token: token, user: userInfos})
+    }
 }

@@ -37,6 +37,7 @@
 import Panel from '@/components/Panel'
 import BookmarksService from '@/services/BookmarksService'
 import store from '@/store/store'
+import checkToken from '@/utils/checkToken'
 export default {
   data () {
     return {
@@ -47,6 +48,8 @@ export default {
     Panel
   },
   async mounted () {
+    await checkToken()
+
     // do a request to the backend for all the user's bookmarks
     if (this.$store.state.isUserLoggedIn) {
       console.log('ISLOGGED? =>', store.state.isUserLoggedIn)

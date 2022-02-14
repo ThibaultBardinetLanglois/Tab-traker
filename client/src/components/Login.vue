@@ -36,6 +36,7 @@
 <script>
 import AuthenticationService from '@/services/AuthenticationService'
 import Panel from '@/components/Panel'
+import checkToken from '@/utils/checkToken'
 export default {
   data () {
     return {
@@ -63,6 +64,10 @@ export default {
   },
   components: {
     Panel
+  },
+  async mounted () {
+    // do a request to check if token is expired
+    await checkToken()
   }
 }
 </script>
